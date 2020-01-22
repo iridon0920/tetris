@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
-func main() {
-	fmt.Println("ここからテトリスを構築していく。")
+func Main() string {
+	return "ここからテトリスを構築していく。"
 }
