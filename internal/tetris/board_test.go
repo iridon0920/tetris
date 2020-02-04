@@ -2,36 +2,18 @@ package tetris
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewBoard(t *testing.T) {
-	width := 5
-	height := 10
-	expWidth := 5
-	expHeight := 10
-	board := NewBoard(width, height)
-
-	if (board.width != expWidth) {
-		t.Errorf("exp: %d",expWidth)
-	}
-	if (board.height != expHeight){
-		t.Errorf("exp: %d",expWidth)
-	}
-	if (board.OutputRow(3) != ".....") {
-		t.Errorf("exp *****")
-	}
+	board := NewBoard(5, 10)
+	assert.Equal(t, 5, board.width)
+	assert.Equal(t, 10, board.height)
+	assert.False(t, board.blocks[0][0])
+	assert.False(t, board.blocks[4][0])
+	assert.False(t, board.blocks[0][9])
+	assert.False(t, board.blocks[4][9])
+	assert.Equal(t, 5, len(board.blocks))
+	assert.Equal(t, 10, len(board.blocks[0]))
 }
-
-// func TestSetBlock (t *testing.T) {
-// 	data := map[string]struct {
-// 		X int
-// 		Y int
-// 		Width int
-// 		Hegiht int
-// 		Exp [][]string
-// 	}{
-// 		"左隅へ置く" : {
-// 			X :
-// 		}
-// 	}
-// }
