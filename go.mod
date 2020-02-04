@@ -7,6 +7,7 @@ require (
 	github.com/kyoh86/xdg v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
+	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/wacul/ptr v1.0.0 // indirect
 	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5 // indirect
