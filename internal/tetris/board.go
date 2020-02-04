@@ -18,3 +18,19 @@ func NewBoard(width, height int) *Board {
 	}
 	return b
 }
+
+func (b *Board) blockExists(width, height int) bool {
+	return b.blocks[width][height]
+}
+
+func (b *Board) put(width, height int) bool {
+	if b.width > width && b.height > height {
+		for i :=0; b.height > height + i; i++ {
+			if !b.blockExists(width, height + i) {
+				b.blocks[width][height + i] = true
+				return true
+			}
+		}
+	}
+	return false
+}
