@@ -2,7 +2,8 @@ package tetris
 
 type Board struct {
 	width, height int
-	blocks [][]bool
+	blocks        [][]bool
+	isGameOver    bool
 }
 
 func NewBoard(width, height int) *Board {
@@ -19,15 +20,29 @@ func NewBoard(width, height int) *Board {
 	return b
 }
 
-func (b *Board) blockExists(width, height int) bool {
-	return b.blocks[width][height]
+func (b *Board) BlockExists(x, y int) bool {
+	return b.blocks[x][y]
 }
 
-func (b *Board) put(width, height int) bool {
-	if b.width > width && b.height > height {
-		for i :=0; b.height > height + i; i++ {
-			if !b.blockExists(width, height + i) {
-				b.blocks[width][height + i] = true
+func (b *Board) Put(x, y, width, height int) bool {
+	if b.width > x && b.height > y {
+		if y != 0 {
+			for i := y; i >= 0; i-- {
+				y = i
+				if b.BlockExists(x, i-1) {
+					break
+				}
+			}
+		}
+		for i := 0; b.height > y+i; i++ {
+			if !b.BlockExists(x, y+i) {
+				for h := 0; height > h; h++ {
+					if b.height > y+i+h {
+						b.blocks[x][y+i+h] = true
+					} else {
+						return false
+					}
+				}
 				return true
 			}
 		}
