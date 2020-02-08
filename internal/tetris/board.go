@@ -3,7 +3,8 @@ package tetris
 type Board struct {
 	width, height int
 	blocks        [][]bool
-	isGameOver    bool
+	isMove        bool
+	moveX, moveY  int
 }
 
 func NewBoard(width, height int) *Board {
@@ -13,7 +14,7 @@ func NewBoard(width, height int) *Board {
 	b.blocks = make([][]bool, width)
 	for column := range b.blocks {
 		b.blocks[column] = make([]bool, height)
-		for row := range b.blocks {
+		for row := range b.blocks[column] {
 			b.blocks[column][row] = false
 		}
 	}
@@ -48,4 +49,44 @@ func (b *Board) Put(x, y, width, height int) bool {
 		}
 	}
 	return false
+}
+
+func (b *Board) Insert(x int) bool {
+	if b.width > x && 0 <= x {
+		if !b.BlockExists(x, 0) && !b.isMove {
+			b.blocks[x][0] = true
+			b.moveX = x
+			b.moveY = 0
+			b.isMove = true
+			return true
+		}
+	}
+	return false
+}
+
+func (b *Board) MoveLeft() bool {
+	if b.moveX-1 >= 0 {
+		b.blocks[b.moveX][b.moveY] = false
+		b.moveX--
+		b.blocks[b.moveX][b.moveY] = true
+		return true
+	}
+	return false
+}
+
+func (b *Board) MoveRight() bool {
+	if b.moveX+1 < b.width {
+		b.blocks[b.moveX][b.moveY] = false
+		b.moveX++
+		b.blocks[b.moveX][b.moveY] = true
+		return true
+	}
+	return false
+}
+
+func (b *Board) MoveBottom() bool {
+	b.blocks[b.moveX][b.moveY] = false
+	b.moveY++
+	b.blocks[b.moveX][b.moveY] = true
+	return true
 }
