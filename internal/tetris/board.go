@@ -1,16 +1,26 @@
 package tetris
 
+import "errors"
+
 type Board struct {
 	width, height int
 	blocks        [][]bool
 	isMove        bool
 	moveX, moveY  int
+	insertX       int
+	HeadY         int
 }
 
-func NewBoard(width, height int) *Board {
+func NewBoard(width, height, insertX int) (*Board, error) {
+	if width <= insertX || 0 > insertX {
+		return nil, errors.New("ブロック挿入位置が不正です。")
+	}
+
 	b := new(Board)
 	b.width = width
 	b.height = height
+	b.HeadY = b.height - 1
+	b.insertX = insertX
 	b.blocks = make([][]bool, width)
 	for column := range b.blocks {
 		b.blocks[column] = make([]bool, height)
@@ -18,23 +28,24 @@ func NewBoard(width, height int) *Board {
 			b.blocks[column][row] = false
 		}
 	}
-	return b
+	return b, nil
 }
 
 func (b *Board) BlockExists(x, y int) bool {
 	return b.blocks[x][y]
 }
 
-func (b *Board) Insert(x int) bool {
-	head := b.height - 1
-	if b.width > x && 0 <= x {
-		if !b.BlockExists(x, head) && !b.isMove {
-			b.blocks[x][head] = true
-			b.moveX = x
-			b.moveY = head
-			b.isMove = true
-			return true
-		}
+func (b *Board) IsGameOver() bool {
+	return b.BlockExists(b.insertX, b.HeadY) && !b.isMove
+}
+
+func (b *Board) Insert() bool {
+	if !b.BlockExists(b.insertX, b.HeadY) && !b.isMove {
+		b.blocks[b.insertX][b.HeadY] = true
+		b.moveX = b.insertX
+		b.moveY = b.HeadY
+		b.isMove = true
+		return true
 	}
 	return false
 }
