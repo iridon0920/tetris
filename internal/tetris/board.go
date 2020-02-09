@@ -66,7 +66,7 @@ func (b *Board) Insert(x int) bool {
 }
 
 func (b *Board) MoveLeft() bool {
-	if b.moveX-1 >= 0 && b.isMove {
+	if b.moveX-1 >= 0 && b.isMove && !b.BlockExists(b.moveX-1, b.moveY) {
 		b.blocks[b.moveX][b.moveY] = false
 		b.moveX--
 		b.blocks[b.moveX][b.moveY] = true
@@ -76,7 +76,7 @@ func (b *Board) MoveLeft() bool {
 }
 
 func (b *Board) MoveRight() bool {
-	if b.moveX+1 < b.width && b.isMove {
+	if b.moveX+1 < b.width && b.isMove && !b.BlockExists(b.moveX+1, b.moveY) {
 		b.blocks[b.moveX][b.moveY] = false
 		b.moveX++
 		b.blocks[b.moveX][b.moveY] = true
@@ -86,12 +86,13 @@ func (b *Board) MoveRight() bool {
 }
 
 func (b *Board) MoveBottom() bool {
-	if b.moveY-1 >= 0 && b.isMove {
-		b.blocks[b.moveX][b.moveY] = false
-		b.moveY--
-		b.blocks[b.moveX][b.moveY] = true
-		if b.moveY == 0 {
+	if b.isMove {
+		if b.moveY == 0 || b.BlockExists(b.moveX, b.moveY-1) {
 			b.isMove = false
+		} else {
+			b.blocks[b.moveX][b.moveY] = false
+			b.moveY--
+			b.blocks[b.moveX][b.moveY] = true
 		}
 		return true
 	}

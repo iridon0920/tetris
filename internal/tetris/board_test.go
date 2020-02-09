@@ -60,7 +60,15 @@ func TestMoveBlock(t *testing.T) {
 	assert.True(t, board.MoveBottom())
 	assert.False(t, board.BlockExists(2, 1))
 	assert.True(t, board.BlockExists(2, 0))
+	assert.True(t, board.isMove)
+	assert.True(t, board.MoveBottom())
 	assert.False(t, board.isMove)
+
+	//ブロック二つ目
+	board.Insert(2)
+	assert.True(t, board.isMove)
+	assert.True(t, board.MoveBottom())
+	assert.True(t, board.isMove)
 }
 
 func TestInsertBlockMiss(t *testing.T) {
@@ -84,14 +92,39 @@ func TestMoveBlockMiss(t *testing.T) {
 	//範囲外
 	assert.True(t, board2.Insert(2))
 	assert.False(t, board2.MoveRight())
-	assert.True(t, board2.MoveBottom())
-	assert.False(t, board2.MoveBottom())
 
 	//接地後に動かそうとしたら失敗
 	board3 := NewBoard(3, 2)
 	board3.Insert(1)
 	board3.MoveBottom()
+	board3.MoveBottom()
 	assert.False(t, board3.MoveLeft())
 	assert.False(t, board3.MoveRight())
 	assert.False(t, board3.MoveBottom())
+
+	// 左右移動先にブロックがあったら動かせない
+	board4 := NewBoard(3, 2)
+
+	board4.Insert(1)
+	board4.MoveLeft()
+	board4.MoveBottom()
+	board4.MoveBottom()
+	board4.Insert(1)
+	board4.MoveLeft()
+	board4.MoveBottom()
+	board4.MoveBottom()
+
+	board4.Insert(1)
+	board4.MoveRight()
+	board4.MoveBottom()
+	board4.MoveBottom()
+	board4.Insert(1)
+	board4.MoveRight()
+	board4.MoveBottom()
+	board4.MoveBottom()
+
+	board4.Insert(1)
+	assert.False(t, board4.MoveLeft())
+	assert.False(t, board4.MoveRight())
+
 }
