@@ -25,32 +25,6 @@ func (b *Board) BlockExists(x, y int) bool {
 	return b.blocks[x][y]
 }
 
-func (b *Board) Put(x, y, width, height int) bool {
-	if b.width > x && b.height > y {
-		if y != 0 {
-			for i := y; i >= 0; i-- {
-				y = i
-				if b.BlockExists(x, i-1) {
-					break
-				}
-			}
-		}
-		for i := 0; b.height > y+i; i++ {
-			if !b.BlockExists(x, y+i) {
-				for h := 0; height > h; h++ {
-					if b.height > y+i+h {
-						b.blocks[x][y+i+h] = true
-					} else {
-						return false
-					}
-				}
-				return true
-			}
-		}
-	}
-	return false
-}
-
 func (b *Board) Insert(x int) bool {
 	head := b.height - 1
 	if b.width > x && 0 <= x {
