@@ -41,13 +41,13 @@ func TestPutBlock(t *testing.T) {
 func TestMoveBlock(t *testing.T) {
 	board := NewBoard(5, 3)
 	assert.True(t, board.Insert(2))
-	assert.True(t, board.BlockExists(2, 0))
+	assert.True(t, board.BlockExists(2, 2))
 	assert.Equal(t, 2, board.moveX)
-	assert.Equal(t, 0, board.moveY)
+	assert.Equal(t, 2, board.moveY)
 
 	assert.True(t, board.MoveLeft())
-	assert.False(t, board.BlockExists(2, 0))
-	assert.True(t, board.BlockExists(1, 0))
+	assert.False(t, board.BlockExists(2, 2))
+	assert.True(t, board.BlockExists(1, 2))
 
 	assert.True(t, board.MoveBottom())
 	assert.False(t, board.BlockExists(1, 0))
@@ -58,6 +58,9 @@ func TestMoveBlock(t *testing.T) {
 	assert.True(t, board.BlockExists(2, 1))
 
 	assert.True(t, board.MoveBottom())
+	assert.False(t, board.BlockExists(2, 1))
+	assert.True(t, board.BlockExists(2, 0))
+	assert.False(t, board.isMove)
 }
 
 func TestInsertBlockMiss(t *testing.T) {
@@ -77,8 +80,18 @@ func TestMoveBlockMiss(t *testing.T) {
 	assert.True(t, board.Insert(0))
 	assert.False(t, board.MoveLeft())
 
-	board2 := NewBoard(3, 10)
+	board2 := NewBoard(3, 2)
 	//範囲外
 	assert.True(t, board2.Insert(2))
 	assert.False(t, board2.MoveRight())
+	assert.True(t, board2.MoveBottom())
+	assert.False(t, board2.MoveBottom())
+
+	//接地後に動かそうとしたら失敗
+	board3 := NewBoard(3, 2)
+	board3.Insert(1)
+	board3.MoveBottom()
+	assert.False(t, board3.MoveLeft())
+	assert.False(t, board3.MoveRight())
+	assert.False(t, board3.MoveBottom())
 }
