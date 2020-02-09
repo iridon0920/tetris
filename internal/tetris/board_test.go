@@ -25,6 +25,16 @@ func TestNewBoard(t *testing.T) {
 	assert.Equal(t, 10, len(board.blocks[0]))
 }
 
+func TestBlockController(t *testing.T) {
+	board, err := NewBoard(5, 2, 2)
+	assert.Nil(t, err)
+	controller := NewBlockController(board)
+	assert.True(t, controller.Insert())
+	assert.Equal(t, 2, controller.x)
+	assert.Equal(t, 1, controller.y)
+	assert.True(t, board.BlockExists(2, 1))
+}
+
 func TestMoveBlock(t *testing.T) {
 	board, err := NewBoard(5, 2, 2)
 	assert.Nil(t, err)
