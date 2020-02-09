@@ -32,7 +32,10 @@ func NewBoard(width, height, insertX int) (*Board, error) {
 }
 
 func (b *Board) BlockExists(x, y int) bool {
-	return b.blocks[x][y]
+	if x < b.width && x >= 0 && y < b.height && y >= 0 {
+		return b.blocks[x][y]
+	}
+	return false
 }
 
 func (b *Board) IsGameOver() bool {

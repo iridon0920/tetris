@@ -14,6 +14,13 @@ func TestNewBoard(t *testing.T) {
 	assert.False(t, board.BlockExists(4, 0))
 	assert.False(t, board.BlockExists(0, 9))
 	assert.False(t, board.BlockExists(4, 9))
+
+	// ボードの範囲外を指定してもFalseを返す
+	assert.False(t, board.BlockExists(-1, 0))
+	assert.False(t, board.BlockExists(0, -1))
+	assert.False(t, board.BlockExists(4, 10))
+	assert.False(t, board.BlockExists(5, 10))
+
 	assert.Equal(t, 5, len(board.blocks))
 	assert.Equal(t, 10, len(board.blocks[0]))
 }
