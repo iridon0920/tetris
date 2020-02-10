@@ -30,9 +30,27 @@ func TestBlockController(t *testing.T) {
 	assert.Nil(t, err)
 	controller := NewBlockController(board)
 	assert.True(t, controller.Insert())
+	assert.True(t, controller.isBlock)
 	assert.Equal(t, 2, controller.x)
 	assert.Equal(t, 1, controller.y)
-	assert.True(t, board.BlockExists(2, 1))
+
+	assert.True(t, controller.MoveLeft())
+	assert.Equal(t, 1, controller.x)
+	assert.Equal(t, 1, controller.y)
+
+	controller.MoveBottom()
+	assert.Equal(t, 1, controller.x)
+	assert.Equal(t, 0, controller.y)
+
+	assert.True(t, controller.MoveRight())
+	assert.Equal(t, 2, controller.x)
+	assert.Equal(t, 0, controller.y)
+
+	assert.False(t, board.BlockExists(2, 0))
+	assert.True(t, controller.isBlock)
+	controller.MoveBottom()
+	assert.True(t, board.BlockExists(2, 0))
+	assert.False(t, controller.isBlock)
 }
 
 func TestMoveBlock(t *testing.T) {
